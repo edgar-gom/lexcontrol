@@ -1,4 +1,4 @@
-enableIndexedDbPersistence(db).catch(err => console.log(err));
+//enableIndexedDbPersistence(db).catch(err => console.log(err));
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
 import { getFirestore, enableIndexedDbPersistence, collection, doc, setDoc, addDoc, getDocs, serverTimestamp, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
 import { deleteDoc } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js";
