@@ -291,7 +291,8 @@ const listas = {
     "Foraneo": document.getElementById('lista-foraneo')
 };
 
-const q = query(collection(db, "expedientes"), orderBy("timestamp", "desc"));
+// Consulta optimizada para caché e historial offline
+const q = query(collection(db, "expedientes"));
 
 onSnapshot(q, (snapshot) => {
     Object.values(listas).forEach(l => { if(l) { l.innerHTML = ""; l.dataset.count = 0; } });
