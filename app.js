@@ -22,7 +22,14 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-enableIndexedDbPersistence(db).catch(err => console.log(err));
+// Reemplaza la línea de enableIndexedDbPersistence por esta:
+enableIndexedDbPersistence(db).catch((err) => {
+    if (err.code === 'failed-precondition') {
+        console.log('La persistencia falló porque hay múltiples pestañas abiertas.');
+    } else if (err.code === 'unimplemented') {
+        console.log('El navegador actual no soporta persistencia offline.');
+    }
+});
 
 // --- 1. CREAR Y ACTUALIZAR EXPEDIENTES (MANUAL) ---
 document.getElementById('btn-crear-manual').addEventListener('click', async () => {
