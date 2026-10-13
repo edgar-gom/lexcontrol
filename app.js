@@ -366,7 +366,7 @@ window.mostrarTodos = function(listaId, btnId) {
     const btn = document.getElementById(btnId);
     if(btn) btn.style.display = 'none';
 }
-
+//Cargar Historial
 async function cargarHistorial(idExpediente, numeroLegible) {
     document.getElementById('titulo-historial').innerText = `Historial: ${numeroLegible}`;
     const contenedor = document.getElementById('contenido-historial');
@@ -398,7 +398,33 @@ async function cargarHistorial(idExpediente, numeroLegible) {
         `;
     });
 }
+// Nueva función global para registrar la actuación instantáneamente
+window.registrarActuacionDesdeHistorial = async function(idExpediente, numeroLegible) {
+    const actuacionInput = document.getElementById('nueva-actuacion-directa');
+    const actuacionTexto = actuacionInput ? actuacionInput.value.trim() : "";
 
+    if (!actuacionTexto) {
+        return alert("Por favor escribe la actuación a registrar.");
+    }
+
+    const fechaHoy = new Date().toLocaleDateString('es-MX');
+
+    // Registrar en subcolección historial
+    await addDoc(collection(db, "expedientes", idExpediente, "historial"), {
+        actuacion: actuacionTexto,
+        fecha: fechaHoy,
+        timestamp: serverTimestamp()
+    });
+
+    // Actualizar documento principal del expediente
+    await setDoc(doc(db, "expedientes", idExpediente), {
+        estado_actual: actuacionTexto,
+        fecha_actualizacion: fechaHoy
+    }, { merge: true });
+
+    // Recargar historial inmediatamente
+    await cargarHistorial(idExpediente, numeroLegible);
+}
 // Buscador
 document.getElementById('buscador').addEventListener('input', (e) => {
     const txt = e.target.value.toLowerCase();
