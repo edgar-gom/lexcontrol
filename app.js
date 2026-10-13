@@ -377,11 +377,18 @@ async function cargarHistorial(idExpediente, numeroLegible) {
     const querySnapshot = await getDocs(qHistorial);
 
     contenedor.innerHTML = `
-        <div style="display:flex; gap:10px; margin-bottom:15px; border-bottom:1px solid var(--border); padding-bottom:10px;">
-            <button class="btn btn-outline" style="flex:1; font-size:13px; border-color:#f59e0b; color:#f59e0b;" onclick="archivarExpediente('${idExpediente}')">📂 Archivar Asunto</button>
-            <button class="btn btn-outline" style="flex:1; font-size:13px; border-color:#ef4444; color:#ef4444;" onclick="eliminarExpediente('${idExpediente}')">🗑️ Eliminar</button>
-        </div>
-    `;
+            <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:15px; border-bottom:1px solid var(--border); padding-bottom:15px;">
+                <!-- Formulario directo para registrar actuación sin escribir datos del expediente -->
+                <div style="display:flex; gap:8px;">
+                    <input type="text" id="nueva-actuacion-directa" placeholder="Escribe la nueva actuación..." style="flex:1; padding:8px; border-radius:6px; border:1px solid var(--border); background:var(--bg-color); color:var(--text-main);">
+                    <button class="btn btn-primary" style="font-size:13px; padding:8px 12px;" onclick="registrarActuacionDesdeHistorial('${idExpediente}', '${numeroLegible}')">➕ Agregar</button>
+                </div>
+                <div style="display:flex; gap:10px;">
+                    <button class="btn btn-outline" style="flex:1; font-size:13px; border-color:#f59e0b; color:#f59e0b; justify-content:center;" onclick="archivarExpediente('${idExpediente}')">📂 Archivar Asunto</button>
+                    <button class="btn btn-outline" style="flex:1; font-size:13px; border-color:#ef4444; color:#ef4444; justify-content:center;" onclick="eliminarExpediente('${idExpediente}')">🗑️ Eliminar</button>
+                </div>
+            </div>
+        `;
 
     if(querySnapshot.empty) {
         contenedor.innerHTML += "<p style='color:var(--text-muted);'>No hay actuaciones registradas.</p>";
